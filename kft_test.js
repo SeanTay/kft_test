@@ -81,25 +81,33 @@ Make_Drink();
 $("#submit-btn").click(function(e){
   e.preventDefault();
   checkRecipe();
-  var ingName_0 = $("#ingName_0").val();
-  var qty_0 = $("#qty_0").val();
-  var unit_0 = $("#unit_0").val();
+  var fieldsetLength = $("fieldset").length;
+  debugger;
+  for (var i = 0; i < fieldsetLength; i ++) {
 
-  //check to see if the sugar is correct
-  for (var i = 0; i < milk_tea_m.length; i++) {
-    if (milk_tea_m[i].name == ingName_0) {
-      if (milk_tea_m[i].qty == qty_0) {
-        console.log("correct")
+    var ingName = $("#ingName_" + i).val();
+    var qty = $("#qty_" + i).val();
+    var unit = $("#unit_" + i).val();
+    debugger;
+    //check to see if the sugar is correct
+    for (var k = 0; k < milk_tea_m.length; k++) {
+      if (milk_tea_m[k].name == ingName) {
+        if (milk_tea_m[k].qty == qty) {
+          console.log("correct")
+        } else {
+          console.log("incorrect qty")
+        }
+        if (milk_tea_m[k].unit == unit){
+          console.log("correct")
+        } else {
+          console.log("incorrect unit")
+        }
       } else {
-        console.log("incorrect qty")
-      }
-      if (milk_tea_m[i].unit == unit_0){
-        console.log("correct")
-      } else {
-        console.log("incorrect unit")
+        console.log("this ingredient doesn't exists");
       }
     }
   }
+
 })
 //check function the drink to the correct recipe
 function checkRecipe() {
@@ -124,13 +132,15 @@ $("#add-btn").click(function(e){
   fieldset.setAttribute("id", "ingredient_" + fieldsetID);
 
   var divQty = document.createElement("div");
-  divQty.innerHTML = 'Quantity: <input id="qty" type="text"><br>'
+  divQty.innerHTML = 'Quantity: <input id="qty_' + fieldsetID + '" type="text"><br>'
+
 
   var divUnit = document.createElement("div");
-  divUnit.innerHTML = 'Unit: <input id="unit" type="text"><br>'
+  divUnit.innerHTML = 'Unit: <input id="unit_' + fieldsetID + '" type="text"><br>'
 
-  var divIngredient = document.createElement("div");
-  divIngredient.innerHTML = 'Ingredient: <input id="ingName" type="text">'
+
+  var divIngName = document.createElement("div");
+  divIngName.innerHTML = 'Ingredient: <input id="ingName_' + fieldsetID + '"type="text">'
 
   var btnRemove = document.createElement("button");
   btnRemove.setAttribute("value", fieldsetID);
@@ -140,7 +150,7 @@ $("#add-btn").click(function(e){
 
   fieldset.appendChild(divQty);
   fieldset.appendChild(divUnit);
-  fieldset.appendChild(divIngredient);
+  fieldset.appendChild(divIngName);
   fieldset.appendChild(btnRemove);
   form.appendChild(fieldset);
 
