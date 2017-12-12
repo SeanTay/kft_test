@@ -34,7 +34,7 @@ var recipes = [
   }
 ]
 
-var milk_tea = [
+var milk_tea_m = [
   {
     name: "sugar",
     qty: 1.5,
@@ -47,14 +47,15 @@ var milk_tea = [
   },
   {
     name: "ice",
-    size: "A"
+    size: "A",
+    unit: "ice cup"
   },
   {
     name: "black_tea",
-    qty: "fill"
+    qty: "n/a",
+    unit: "n/a"
   }
 ]
-debugger;
 //each recipe will be consist of quantity, unit, ingredient
 function Recipe(qty, unit, ingredient) {
   this.quanity = qty;
@@ -80,6 +81,25 @@ Make_Drink();
 $("#submit-btn").click(function(e){
   e.preventDefault();
   checkRecipe();
+  var ingName_0 = $("#ingName_0").val();
+  var qty_0 = $("#qty_0").val();
+  var unit_0 = $("#unit_0").val();
+
+  //check to see if the sugar is correct
+  for (var i = 0; i < milk_tea_m.length; i++) {
+    if (milk_tea_m[i].name == ingName_0) {
+      if (milk_tea_m[i].qty == qty_0) {
+        console.log("correct")
+      } else {
+        console.log("incorrect qty")
+      }
+      if (milk_tea_m[i].unit == unit_0){
+        console.log("correct")
+      } else {
+        console.log("incorrect unit")
+      }
+    }
+  }
 })
 //check function the drink to the correct recipe
 function checkRecipe() {
@@ -104,13 +124,13 @@ $("#add-btn").click(function(e){
   fieldset.setAttribute("id", "ingredient_" + fieldsetID);
 
   var divQty = document.createElement("div");
-  divQty.innerHTML = 'Quantity: <input id="quantity" type="text"><br>'
+  divQty.innerHTML = 'Quantity: <input id="qty" type="text"><br>'
 
   var divUnit = document.createElement("div");
   divUnit.innerHTML = 'Unit: <input id="unit" type="text"><br>'
 
   var divIngredient = document.createElement("div");
-  divIngredient.innerHTML = 'Ingredient: <input id="ingredient" type="text">'
+  divIngredient.innerHTML = 'Ingredient: <input id="ingName" type="text">'
 
   var btnRemove = document.createElement("button");
   btnRemove.setAttribute("value", fieldsetID);
