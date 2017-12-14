@@ -41,17 +41,17 @@ var milk_tea_m = [
     unit: "oz"
   },
   {
-    name: "milk_powder",
+    name: "milk powder",
     qty: 2,
     unit: "scoop"
   },
   {
     name: "ice",
-    size: "A",
+    qty: "A",
     unit: "ice cup"
   },
   {
-    name: "black_tea",
+    name: "black tea",
     qty: "n/a",
     unit: "n/a"
   }
@@ -82,30 +82,51 @@ $("#submit-btn").click(function(e){
   e.preventDefault();
   checkRecipe();
   var fieldsetLength = $("fieldset").length;
-  debugger;
-  for (var i = 0; i < fieldsetLength; i ++) {
+  var aIngList = [];
+  var wrongAns = false;
+  //check for missing ingredient
+  var missingIngList = ["sugar", "milk powder", "ice", "black tea"]
 
+
+
+  for (var i = 0; i < fieldsetLength; i ++) {
     var ingName = $("#ingName_" + i).val();
     var qty = $("#qty_" + i).val();
     var unit = $("#unit_" + i).val();
-    debugger;
     //check to see if the sugar is correct
     for (var k = 0; k < milk_tea_m.length; k++) {
+      //if recipes ing match the input
+
+      //this can be switch statement
       if (milk_tea_m[k].name == ingName) {
+        //remove it from missingIngList
+        for (var j = 0 ; j < missingIngList.length ; j++) {
+          if (missingIngList[j] == ingName){
+            missingIngList.splice(j, 1);
+          }
+        }
         if (milk_tea_m[k].qty == qty) {
           console.log("correct")
         } else {
           console.log("incorrect qty")
+          wrongAns = true;
         }
         if (milk_tea_m[k].unit == unit){
           console.log("correct")
         } else {
           console.log("incorrect unit")
+          wrongAns = true;
         }
       } else {
-        console.log("this ingredient doesn't exists");
+        console.log(milk_tea_m[k].name + " ingredient doesn't exists");
       }
     }
+  }
+  if (wrongAns == false && missingIngList.length == 0) {
+    alert ("answer is correct");
+  } else {
+    alert ("wrong")
+    missingIngList = []
   }
 
 })
