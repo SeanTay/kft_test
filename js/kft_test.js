@@ -56,37 +56,22 @@ var milk_tea_m = [
     unit: "n/a"
   }
 ]
-//each recipe will be consist of quantity, unit, ingredient
-function Recipe(qty, unit, ingredient) {
-  this.quanity = qty;
-  this.unit = unit;
-  this.ingredient = ingredient;
-}
 
 
 
-//put together all the recipe and construct an arraw of objects
-var Drink = [];
-
-function Make_Drink() {
-  var recipe_1 = new Recipe("1.5", "oz", "sugar");
-  var recipe_2 = new Recipe("2", "cup", "milk powder");
-    Drink.push(recipe_1);
-    Drink.push(recipe_2);
-    console.log(Drink);
-}
-
-Make_Drink();
-
+//submission 
 $("#submit-btn").click(function(e){
   e.preventDefault();
-  checkRecipe();
   var fieldsetLength = $("fieldset").length;
   var aIngList = [];
   var wrongAns = false;
   //check for missing ingredient
-  var missingIngList = ["sugar", "milk powder", "ice", "black tea"]
+  var missingIngList = [];
 
+  for (var missingIngIndex = 0; missingIngIndex < milk_tea_m.length; missingIngIndex++) {
+    var missingIngName = milk_tea_m[missingIngIndex].name;
+    missingIngList.push(missingIngName);
+  }
 
 
   for (var i = 0; i < fieldsetLength; i ++) {
@@ -130,17 +115,8 @@ $("#submit-btn").click(function(e){
   }
 
 })
-//check function the drink to the correct recipe
-function checkRecipe() {
-  console.log("checkRecipe");
-}
+//end of submission
 
-//take the first object, find the name, look for the name, compare each item
-//take the second object, find the name, look for the name, compare each item
-//take the third object, find the name, look for the name, compare each item
-
-
-//namespacing each fieldset
 
 //dom minpulations
 var form = document.getElementById("formRecipes");
@@ -149,38 +125,65 @@ var fieldsetID = 1;
 
 $("#add-btn").click(function(e){
   e.preventDefault();
-  var fieldset = document.createElement("fieldset");
-  fieldset.setAttribute("id", "ingredient_" + fieldsetID);
 
-  var divQty = document.createElement("div");
-  divQty.innerHTML = 'Quantity: <input id="qty_' + fieldsetID + '" type="text"><br>'
+  addFieldset(fieldsetID);
 
-
-  var divUnit = document.createElement("div");
-  divUnit.innerHTML = 'Unit: <input id="unit_' + fieldsetID + '" type="text"><br>'
-
-
-  var divIngName = document.createElement("div");
-  divIngName.innerHTML = 'Ingredient: <input id="ingName_' + fieldsetID + '"type="text">'
-
-  var btnRemove = document.createElement("button");
-  btnRemove.setAttribute("value", fieldsetID);
-  btnRemove.setAttribute("class", "remove-btn");
-  btnRemove.innerHTML = "Remove";
-
-
-  fieldset.appendChild(divQty);
-  fieldset.appendChild(divUnit);
-  fieldset.appendChild(divIngName);
-  fieldset.appendChild(btnRemove);
-  form.appendChild(fieldset);
-
-  fieldsetID += 1;
 })
+
 $("#formRecipes").on("click", ".remove-btn", function(e){
   e.preventDefault();
   var divToRemove = document.getElementById("ingredient_" + this.value);
   form.removeChild(divToRemove);
 })
 
+function addFieldset() {
+  var fieldset = document.createElement("fieldset");
+  fieldset.className += "fieldset-container";
+  fieldset.setAttribute("id", "ingredient_" + fieldsetID);
+
+  var divQty = addQtyField(fieldsetID);
+  var divUnit = addUnitField(fieldsetID);
+  var divIngName = addIngField(fieldsetID);
+
+  var btnRemove = document.createElement("button");
+  btnRemove.setAttribute("value", fieldsetID);
+  btnRemove.setAttribute("class", "remove-btn");
+  btnRemove.innerHTML = "Remove";
+
+  fieldset.appendChild(divQty);
+  fieldset.appendChild(divUnit);
+  fieldset.appendChild(divIngName);
+  fieldset.appendChild(btnRemove);
+  form.appendChild(fieldset);
+  fieldsetID += 1;
+} 
+
+function addQtyField(fieldsetID) {
+  var divQty = document.createElement("div");
+  divQty.className += "col-xs-4";
+  divQty.innerHTML = '<input id="qty_' + fieldsetID + '" type="text"><br>';
+  return divQty;
+}
+
+function addUnitField(filedsetID) {
+  var divUnit = document.createElement("divUnit"); 
+  divUnit.className += "col-xs-4";
+  var selectEl = document.createElement("select")
+  selectEl.className += "form-control";
+  var unitArray = ["Choose...", "Oz", "cc", "scoop"]
+  for (var unit = 0; unit < unitArray.length ; unit++) {
+    var op = new Option();
+    op.text = unitArray[unit];
+    selectEl.options.add(op); 
+  }
+  divUnit.appendChild(selectEl);
+  return divUnit;
+}
+
+function addIngField(fieldsetID) {
+  var divIngName = document.createElement("div");
+  divIngName.className += "col-xs-4";
+  divIngName.innerHTML = '<input id="ingName_' + fieldsetID + '" type="text">';
+  return divIngName;
+}
 //end of dom minipulation
